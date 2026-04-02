@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Portfolio Optimizer | Degens.World</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">📐</span>
+        <span class="logo-text">Portfolio <span class="accent">Optimizer</span></span>
+      </div>
+      <div class="tagline">Modern Portfolio Theory · Efficient Frontier · Sharpe Maximization</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Portfolio Builder -->
+    <section class="card builder-card">
+      <h2>Build Your Portfolio</h2>
+      <p class="sub">Add up to 10 assets. Weights auto-normalize to 100%.</p>
+
+      <div id="assetRows" class="asset-rows">
+        <!-- rows injected by JS -->
+      </div>
+
+      <div class="builder-actions">
+        <button id="addAsset" class="btn btn-secondary">+ Add Asset</button>
+        <div class="timeframe-pick">
+          <label>History</label>
+          <select id="historyDays">
+            <option value="30">30D</option>
+            <option value="90" selected>90D</option>
+            <option value="180">180D</option>
+            <option value="365">1Y</option>
+          </select>
+        </div>
+        <button id="optimizeBtn" class="btn btn-primary">⚡ Optimize</button>
+      </div>
+
+      <div id="builderError" class="error-msg hidden"></div>
+    </section>
+
+    <!-- Loading -->
+    <div id="loadingState" class="loading-state hidden">
+      <div class="spinner"></div>
+      <p id="loadingText">Fetching price history…</p>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="hidden">
+
+      <!-- Stats row -->
+      <div class="stats-row" id="statsRow"></div>
+
+      <!-- Charts row -->
+      <div class="charts-row">
+        <div class="card chart-card">
+          <h3>Efficient Frontier</h3>
+          <p class="sub">10 000 simulated portfolios · color = Sharpe ratio</p>
+          <canvas id="frontierChart"></canvas>
+          <div class="frontier-legend">
+            <span class="dot current-dot"></span> Current
+            <span class="dot optimal-dot"></span> Max Sharpe
+            <span class="dot minvol-dot"></span> Min Volatility
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <h3>Allocation Comparison</h3>
+          <div class="alloc-row">
+            <div class="alloc-half">
+              <p class="sub">Current</p>
+              <canvas id="currentPie"></canvas>
+            </div>
+            <div class="alloc-half">
+              <p class="sub">Optimal (Max Sharpe)</p>
+              <canvas id="optimalPie"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Correlation matrix -->
+      <div class="card">
+        <h3>Correlation Matrix <span class="badge">90D returns</span></h3>
+        <div id="corrMatrix" class="corr-matrix"></div>
+      </div>
+
+      <!-- Rebalance table -->
+      <div class="card">
+        <h3>Rebalancing Plan</h3>
+        <div class="table-wrap">
+          <table id="rebalanceTable">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Current %</th>
+                <th>Optimal %</th>
+                <th>Delta</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Return stats table -->
+      <div class="card">
+        <h3>Asset Statistics</h3>
+        <div class="table-wrap">
+          <table id="statsTable">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Ann. Return</th>
+                <th>Ann. Volatility</th>
+                <th>Sharpe (ind.)</th>
+                <th>Max Drawdown</th>
+                <th>Corr w/ BTC</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Data: CoinGecko · Calculations: Modern Portfolio Theory · Built by <a href="https://degens.world" target="_blank">Degens.World</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
