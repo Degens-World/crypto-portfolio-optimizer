@@ -33,6 +33,9 @@
 
 ## Live Demo
 
+
+**[https://ad-crypto-portfolio-optimizer-17751.vercel.app](https://ad-crypto-portfolio-optimizer-17751.vercel.app)**
+
 Deployed at [degens.world](https://degens.world)
 
 ---
